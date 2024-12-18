@@ -36,6 +36,208 @@
 (unless (treesit-language-available-p 'glimmer)
   (treesit-install-language-grammar 'glimmer))
 
+(setq glimmer--font-lock-settings
+      (treesit-font-lock-rules
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((block_statement_start "{{#" @font-lock-builtin-face argument: (_)* @font-lock-variable-use-face path: (_)* @font-lock-builtin-face (_)* "}}" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((block_statement_end) @font-lock-builtin-face)
+       :language 'glimmer
+       :override t
+       :feature 'comment
+       `((comment_statement) @font-lock-comment-face)
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((element_node_start ("<" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face)))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((glimmer_node_start ("<" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face)))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((contextual_component_start ("<" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face)))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((named_block_node_start ("<" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face)))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((sub_expression ("(" @font-lock-builtin-face (_)* ")" @font-lock-builtin-face)))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((attribute_node "=" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((attribute_node (concat_statement) @font-lock-string-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((element_node_void "<" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((glimmer_node_void "<" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((contextual_component_void "<" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((element_node_void "/>" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((glimmer_node_void "/>" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((contextual_component_void "/>" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((element_node_end "</" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((glimmer_node_end "</" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((contextual_component_end "</" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((named_block_node_end "</" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((path_expression) @font-lock-variable-use-face)
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((mustache_statement "{{" @font-lock-builtin-face (_)* "}}" @font-lock-builtin-face))
+       :language 'glimmer
+       :override t
+       :feature 'definition
+       `((tag_name) @font-lock-constant-face)
+       :language 'glimmer
+       :override t
+       :feature 'definition
+       `((glimmer_tag_name) @font-lock-constant-face)
+       :language 'glimmer
+       :override t
+       :feature 'definition
+       `((contextual_component_name) @font-lock-variable-use-face)
+       :language 'glimmer
+       :override t
+       :feature 'definition
+       `((named_block_name) @font-lock-variable-name-face)
+       :language 'glimmer
+       :override t
+       :feature 'property
+       `((attribute_name) @font-lock-variable-name-face)
+       :language 'glimmer
+       :override t
+       :feature 'property
+       `((string_literal) @font-lock-string-face)
+       :language 'glimmer
+       :override t
+       :feature 'property
+       `((string_literal) @font-lock-string-face)
+       :language 'glimmer
+       :override t
+       :feature 'function
+       '((helper_invocation helper: (identifier) @font-lock-function-call-face))
+       :language 'glimmer ; after helper_invocation so we can override it
+       :override t
+       :feature 'keyword
+       "((mustache_statement \"{{\" (helper_invocation (identifier) @font-lock-builtin-face (#equal @font-lock-builtin-face \"else\") (identifier) (_)) \"}}\"))"
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       "((mustache_statement \"{{\" (helper_invocation (identifier) (identifier) @font-lock-builtin-face (#equal @font-lock-builtin-face \"if\") (_)) \"}}\"))"
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       "((mustache_statement \"{{\" (identifier) @font-lock-builtin-face (#equal @font-lock-builtin-face \"else\") \"}}\"))"
+       :language 'glimmer
+       :override t
+       :feature 'function
+       '(((boolean_literal) @font-lock-constant-face))
+       :language 'glimmer
+       :override t
+       :feature 'keyword
+       `((block_params "as" @font-lock-builtin-face "|" @font-lock-builtin-face ((identifier) @font-lock-variable-name-face)* "|" @font-lock-builtin-face))))
+
+(setq glimmer--indent-rules
+      `((glimmer
+         ;; ((log-not-match "{{else}}") column-0 0)
+         ((query "(mustache_statement \"{{\" (identifier) @else (#equal @else \"else\") \"}}\") @my_capture_for_indentation") parent-bol 0)
+         ;; ((log-not-match "template") column-0 0)
+         ((or (node-is "template") (parent-is "template")) column-0 0)
+         ;; ((log-not-match "element_node_end or block_statement_end") column-0 0)
+         ((or (node-is "element_node_end")
+              (node-is "glimmer_node_end")
+              (node-is "contextual_component_end")
+              (node-is "named_block_node_end")
+              (node-is "block_statement_end"))
+          parent-bol 0)
+         ((and (or (parent-is "element_node_start")
+                   (parent-is "glimmer_node_start")
+                   (parent-is "contextual_component_start")
+                   (parent-is "named_block_node_start"))
+               (node-is ">"))
+          parent-bol 0)
+         ;; ((log-not-match "parent is element_node or block_statement") column-0 0)
+         ((or (parent-is "element_node")
+              (parent-is "glimmer_node")
+              (parent-is "contextual_component_node")
+              (parent-is "named_block_node")
+              (parent-is "block_statement"))
+          parent-bol html-ts-mode-indent-offset)
+         ;; ((log-not-match "parent is text_node in element_node") column-0 0)
+         ((and (parent-is "text_node")
+               (or (grand-parent-is "element_node")
+                   (grand-parent-is "glimmer_node")
+                   (grand-parent-is "contextual_component_node")
+                   (grand-parent-is "named_block_node")
+                   (grand-parent-is "block_statement")))
+          grand-parent-bol html-ts-mode-indent-offset)
+         ;; ((log-not-match "parent is text node") column-0 0)
+         ((parent-is "text_node") parent-bol 0)
+         ;; ((log-not-match "text_node as parent") column-0 0)
+         )))
+
+(setq glimmer--thing-settings
+      `((html
+         (sexp ,(regexp-opt '("element"
+                              "text"
+                              "attribute"
+                              "value")))
+         (sentence "tag")
+         (text ,(regexp-opt '("comment" "text"))))
+        (glimmer
+         (sexp ,(regexp-opt '("comment_statement"
+                              "element_node"
+                              "glimmer_node"
+                              "named_block_node"
+                              "contextual_component_node"
+                              "attribute_node"
+                              "mustache_statement"
+                              "block_statement"
+                              "identifier")))
+         (text ,(regexp-opt '("text_node" "comment_statement"))))))
+
 (define-derived-mode glimmer-mode html-mode "GLMR"
   "Major mode for editing glimmer handlebars files with tree-sitter."
 
@@ -75,44 +277,7 @@
         treesit-simple-indent-presets)
 
   ;; Indent.
-  (setq-local treesit-simple-indent-rules
-              `((glimmer
-                 ;; ((log-not-match "{{else}}") column-0 0)
-                 ((query "(mustache_statement \"{{\" (identifier) @else (#equal @else \"else\") \"}}\") @my_capture_for_indentation") parent-bol 0)
-                 ;; ((log-not-match "template") column-0 0)
-                 ((or (node-is "template") (parent-is "template")) column-0 0)
-                 ;; ((log-not-match "element_node_end or block_statement_end") column-0 0)
-                 ((or (node-is "element_node_end")
-                      (node-is "glimmer_node_end")
-                      (node-is "contextual_component_end")
-                      (node-is "named_block_node_end")
-                      (node-is "block_statement_end"))
-                  parent-bol 0)
-                 ((and (or (parent-is "element_node_start")
-                           (parent-is "glimmer_node_start")
-                           (parent-is "contextual_component_start")
-                           (parent-is "named_block_node_start"))
-                       (node-is ">"))
-                  parent-bol 0)
-                 ;; ((log-not-match "parent is element_node or block_statement") column-0 0)
-                 ((or (parent-is "element_node")
-                      (parent-is "glimmer_node")
-                      (parent-is "contextual_component_node")
-                      (parent-is "named_block_node")
-                      (parent-is "block_statement"))
-                  parent-bol html-ts-mode-indent-offset)
-                 ;; ((log-not-match "parent is text_node in element_node") column-0 0)
-                 ((and (parent-is "text_node")
-                       (or (grand-parent-is "element_node")
-                           (grand-parent-is "glimmer_node")
-                           (grand-parent-is "contextual_component_node")
-                           (grand-parent-is "named_block_node")
-                           (grand-parent-is "block_statement")))
-                  grand-parent-bol html-ts-mode-indent-offset)
-                 ;; ((log-not-match "parent is text node") column-0 0)
-                 ((parent-is "text_node") parent-bol 0)
-                 ;; ((log-not-match "text_node as parent") column-0 0)
-                 )))
+  (setq-local treesit-simple-indent-rules glimmer--indent-rules)
   ;;html-ts-mode--indent-rules
 
   ;; Navigation.
@@ -141,148 +306,7 @@
                  (text ,(regexp-opt '("text_node" "comment_statement"))))))
 
   ;; Font-lock.
-  (setq-local treesit-font-lock-settings
-              (treesit-font-lock-rules
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((block_statement_start "{{#" @font-lock-builtin-face argument: (_)* @font-lock-variable-use-face path: (_)* @font-lock-builtin-face (_)* "}}" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((block_statement_end) @font-lock-builtin-face)
-               :language 'glimmer
-               :override t
-               :feature 'comment
-               `((comment_statement) @font-lock-comment-face)
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((element_node_start ("<" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face)))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((glimmer_node_start ("<" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face)))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((contextual_component_start ("<" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face)))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((named_block_node_start ("<" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face)))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((sub_expression ("(" @font-lock-builtin-face (_)* ")" @font-lock-builtin-face)))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((attribute_node "=" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((attribute_node (concat_statement) @font-lock-string-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((element_node_void "<" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((glimmer_node_void "<" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((contextual_component_void "<" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((element_node_void "/>" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((glimmer_node_void "/>" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((contextual_component_void "/>" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((element_node_end "</" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((glimmer_node_end "</" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((contextual_component_end "</" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((named_block_node_end "</" @font-lock-builtin-face (_)* ">" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((path_expression) @font-lock-variable-use-face)
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((mustache_statement "{{" @font-lock-builtin-face (_)* "}}" @font-lock-builtin-face))
-               :language 'glimmer
-               :override t
-               :feature 'definition
-               `((tag_name) @font-lock-constant-face)
-               :language 'glimmer
-               :override t
-               :feature 'definition
-               `((glimmer_tag_name) @font-lock-constant-face)
-               :language 'glimmer
-               :override t
-               :feature 'definition
-               `((contextual_component_name) @font-lock-variable-use-face)
-               :language 'glimmer
-               :override t
-               :feature 'definition
-               `((named_block_name) @font-lock-variable-name-face)
-               :language 'glimmer
-               :override t
-               :feature 'property
-               `((attribute_name) @font-lock-variable-name-face)
-               :language 'glimmer
-               :override t
-               :feature 'property
-               `((string_literal) @font-lock-string-face)
-               :language 'glimmer
-               :override t
-               :feature 'property
-               `((string_literal) @font-lock-string-face)
-               :language 'glimmer
-               :override t
-               :feature 'function
-               '((helper_invocation helper: (identifier) @font-lock-function-call-face))
-               :language 'glimmer ; after helper_invocation so we can override it
-               :override t
-               :feature 'keyword
-               "((mustache_statement \"{{\" (helper_invocation (identifier) @font-lock-builtin-face (#equal @font-lock-builtin-face \"else\") (identifier) (_)) \"}}\"))"
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               "((mustache_statement \"{{\" (helper_invocation (identifier) (identifier) @font-lock-builtin-face (#equal @font-lock-builtin-face \"if\") (_)) \"}}\"))"
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               "((mustache_statement \"{{\" (identifier) @font-lock-builtin-face (#equal @font-lock-builtin-face \"else\") \"}}\"))"
-               :language 'glimmer
-               :override t
-               :feature 'function
-               '(((boolean_literal) @font-lock-constant-face))
-               :language 'glimmer
-               :override t
-               :feature 'keyword
-               `((block_params "as" @font-lock-builtin-face "|" @font-lock-builtin-face ((identifier) @font-lock-variable-name-face)* "|" @font-lock-builtin-face))))
+  (setq-local treesit-font-lock-settings glimmer--font-lock-settings)
 
   (setq-local treesit-font-lock-feature-list
               '((comment keyword definition)
