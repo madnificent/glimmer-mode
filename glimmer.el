@@ -30,7 +30,8 @@
 
 ;; (add-to-list 'treesit-language-source-alist
 ;;              '(glimmer "https://github.com/madnificent/tree-sitter-glimmer" "main" "src"))
-(push '(glimmer "file:///home/madnificent/code/tree-sitter/tree-sitter-glimmer/" "main" "src")
+;; (glimmer "file:///home/madnificent/code/tree-sitter/tree-sitter-glimmer/" "main" "src")
+(push '(glimmer "https://github.com/madnificent/tree-sitter-glimmer" "main" "src")
       treesit-language-source-alist)
 
 (unless (treesit-language-available-p 'glimmer)
